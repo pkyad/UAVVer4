@@ -131,7 +131,7 @@ classdef Arena<handle
             % function to simulate the target movements 
             for i = 1:1:numel(obj.targets)
                 if i>5
-                    % making shure the one of the convoy is still for the
+                    % making sure the one of the convoy is still for the
                     % first 1 minute
                     if numel(obj.targets(1).vehical_log)>600
                         

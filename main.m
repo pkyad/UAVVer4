@@ -3,18 +3,18 @@ clear all
 clc
 clear
 
-addpath C:\Users\Pradeep\Documents\MATLAB\Tl_project_Ver1\Multi-UAV_mission_Ver_4\track
+addpath C:\Users\Pradeep\Documents\MATLAB\Multi-UAV_mission_Ver_4\track
 
 date_and_time = clock;
 
-diary(strcat('C:\Users\Pradeep\Documents\MATLAB\Tl_project_Ver1\Multi-UAV_mission_Ver_4\logs\',...
+diary(strcat('C:\Users\Pradeep\Documents\MATLAB\Multi-UAV_mission_Ver_4\logs\',...
     'simulation_logs',num2str(date_and_time(3)), num2str(date_and_time(4)), num2str(date_and_time(5)) ,'.txt'))
 
 diary on
 
 num_of_UAVs = 6; % number of UAVs in the mission
 
-time = 1200; % simulation time in seconds
+time = 1000; % simulation time in seconds
 
 %=======  initial states of the targets
 initial_state(10).x = 4012+100*1/sqrt(2);
