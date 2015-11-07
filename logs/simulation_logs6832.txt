@@ -1,0 +1,8 @@
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('AirCraft/move')" style="font-weight:bold">AirCraft/move</a>
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'D:\MATLAB\UAVVer4\main.m', 93)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('D:\MATLAB\UAVVer4\main.m',93,0)">line 93</a>)
+    for k = 1:1:numel(UAVs)
+} 
+main
+Elapsed time is 15.260753 seconds.

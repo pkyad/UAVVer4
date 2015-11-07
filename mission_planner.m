@@ -162,13 +162,13 @@ classdef mission_planner<handle
             % get function for takeoff_orbit
             if obj.running_on <=3
                 output.x=1000;
-                output.y=0;
+                output.y=-4000;
                 output.z=300;
                 output.rad=500;
                 
             else
                 output.x=1000;
-                output.y=0;
+                output.y=-4000;
                 output.z=200;
                 output.rad=500;
                 
@@ -187,19 +187,19 @@ classdef mission_planner<handle
             if obj.running_on <=3
                 
                 output(1).x=0;
-                output(1).y=0;
+                output(1).y=-4000;
                 output(1).z=100;
                 output(1).rad=200;
                 output(1).ready=0;         % Level 1 is not the jump-in level for UAVi
                 
                 output(2).x=0;
-                output(2).y=0;
+                output(2).y=-4000;
                 output(2).z=200;
                 output(2).rad=200;
                 output(2).ready=1;         % Level 2 is the jump-in level for UAVi
                 
                 output(3).x=0;
-                output(3).y=0;
+                output(3).y=-4000;
                 output(3).z=200;
                 output(3).rad=200;
                 output(3).ready=1;
@@ -208,21 +208,21 @@ classdef mission_planner<handle
                 
                 
                 output(1).x=0;
-                output(1).y=0;
+                output(1).y=-4000;
                 output(1).z=100;
                 output(1).rad=200;
                 output(1).ready=0;
                 
                 
                 output(2).x=0;
-                output(2).y=0;
+                output(2).y=-4000;
                 output(2).z=200;
                 output(2).rad=200;
                 output(2).ready=0;
                 
                 
                 output(3).x=0;
-                output(3).y=0;
+                output(3).y=-4000;
                 output(3).z=300;
                 output(3).rad=200;
                 output(3).ready=1;
@@ -348,7 +348,6 @@ switch obj.takeoff_parameters(ID).AC_CP_states
                 % decides to merge into the holding pattern. In the
                 % second case, UAV(ii) continues its climbing by
                 % returning back to state 0.
-                
                 switch ICA(level).ready == 1
                     case 0 % the current level is not the jump-in level for UAV(ii)
                         obj.takeoff_parameters(ID).AC_CP_states = 0; % UAVi goes back to state 0 and will continue climbing to the next intermediate level
@@ -364,7 +363,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
                         % distance from the current coordinates of UAV(ii)
                         % in the first quadron to the holding pattern.
                         
-                        if state.x >=0 && state.y >= 0 % To ensure that UAV(ii) is in the first quadron.
+                        if state.x >=0 && state.y >= -4000 % To ensure that UAV(ii) is in the first quadron.
                             u = take_off_orbit.x + (take_off_orbit.rad/(sqrt((state.x - take_off_orbit.x)^2+(state.y - take_off_orbit.y)^2)))*(state.x - take_off_orbit.x);
                             v = take_off_orbit.y + (take_off_orbit.rad/(sqrt((state.x - take_off_orbit.x)^2+(state.y - take_off_orbit.y)^2)))*(state.y - take_off_orbit.y);
                             
@@ -377,6 +376,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
                                 if j==ID
                                     continue;
                                 end
+                                
                                 if obj.take_off_orbit.x==take_off_orbit.x && obj.take_off_orbit.y==take_off_orbit.y && obj.take_off_orbit.z==take_off_orbit.z && obj.take_off_orbit.rad==take_off_orbit.rad % && hbRecdHist(2,j,ii)>=3  UAVj has the same holding pattern as UAVi and already in the holding pattern
                                     
                                     %consider which quadron UAVj is and then determine the time instant that UAVj will reach (u,v)
@@ -393,6 +393,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
                                         end
                                     end
                                     tj = theta*obj.take_off_orbit.rad/15 + n*arena.dt; % assume that the flying speed in the holding pattern is 15
+                                    
                                     if abs(tj - ti) < 30  % If the gap is lower than 30 seconds, then UAV(ii) cannot jump in.
                                         obj.takeoff_parameters(ID).jump_in_ready = 0;
                                         break;
@@ -417,6 +418,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
         a = abs(((state.x-take_off_orbit.x)^2+(state.y-take_off_orbit.y)^2+(state.h-take_off_orbit.z)^2)-(take_off_orbit.rad)^2);
         if a < obj.Delta  % UAV(ii) has reached the holding pattern
             obj.takeoff_parameters(ID).AC_CP_states = 3;
+            
         end
         cmd.type = 'orbit';
         cmd.orbit = [take_off_orbit.x;take_off_orbit.y;take_off_orbit.z;12;15;take_off_orbit.rad;1];
@@ -430,6 +432,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
             end
         end
         if flag ==1
+            
             obj.takeoff_parameters(ID).AC_CP_states = 4;  % Once UAV(ii) starts its countdown, it moves to the last state before switching to the fly_to_AO mode.
         end
         obj.NTimer(obj.running_on) = 20;
@@ -455,8 +458,7 @@ cmd.wayPt = [arena.AO_waypoint.x;arena.AO_waypoint.y;arena.AO_waypoint.z(obj.run
 % check whether UAV(i_uav) has crossed the boundary of AO and entered it.
 % If a boundary is crossed, then UAV(i_uav) switches to the searching mode.
 
-if (AC.state.x>arena.AO_waypoint.x && AC.state.x <arena.Area_of_Operation.x(2)) ||...
-        (arena.AO_waypoint.y > AC.state.y && arena.Area_of_Operation.y(2)< AC.state.y )
+if AC.state.x>arena.AO_waypoint.x && arena.AO_waypoint.y < AC.state.y 
     % Check whether UAV[UAV_no] has crossed the boundary of AO.
     
     obj.working_mode(obj.running_on) = 3;  % switch to the searching mode

@@ -1,0 +1,18 @@
+
+ans =
+
+is it working
+
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('AirCraft>DoWayPt', 'D:\MATLAB\UAVVer4\AirCraft.m', 517)" style="font-weight:bold">AirCraft>DoWayPt</a> (<a href="matlab: opentoline('D:\MATLAB\UAVVer4\AirCraft.m',517,0)">line 517</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('AirCraft>DoOrbit', 'D:\MATLAB\UAVVer4\AirCraft.m', 436)" style="font-weight:bold">AirCraft>DoOrbit</a> (<a href="matlab: opentoline('D:\MATLAB\UAVVer4\AirCraft.m',436,0)">line 436</a>)
+    [state,meas_state] = DoWayPt(obj , sample_arena,cmd,disturbance);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('AirCraft/move', 'D:\MATLAB\UAVVer4\AirCraft.m', 231)" style="font-weight:bold">AirCraft/move</a> (<a href="matlab: opentoline('D:\MATLAB\UAVVer4\AirCraft.m',231,0)">line 231</a>)
+                    [obj.state,obj.measured_state] = DoOrbit(obj, sample_arena);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('main', 'D:\MATLAB\UAVVer4\main.m', 94)" style="font-weight:bold">main</a> (<a href="matlab: opentoline('D:\MATLAB\UAVVer4\main.m',94,0)">line 94</a>)
+        UAVs(k).move(sample_arena);
+} 
+main

@@ -1,0 +1,216 @@
+
+ans =
+
+is it working
+
+
+ans =
+
+checking if something
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+changed ac_cp_state to 2
+
+
+ans =
+
+checking if something
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+changed ac_cp_state to 2
+
+
+ans =
+
+checking if something
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+changed ac_cp_state to 2
+
+
+ans =
+
+checking if something
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+changed ac_cp_state to 2
+
+
+ans =
+
+checking if something
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+changed ac_cp_state to 2
+
+
+ans =
+
+checking if something
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+before the tj-ti
+
+
+ans =
+
+changed ac_cp_state to 2
+
+Elapsed time is 40.371820 seconds.

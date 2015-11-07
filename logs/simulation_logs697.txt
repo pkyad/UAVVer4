@@ -1,0 +1,6 @@
+
+ans =
+
+is it working
+
+Elapsed time is 71.669240 seconds.
