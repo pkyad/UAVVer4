@@ -8,10 +8,10 @@ addpath D:\MATLAB\UAVVer4\track
 
 date_and_time = clock;
 
-diary(strcat('D:\MATLAB\UAVVer4\logs\',...
-    'simulation_logs',num2str(date_and_time(3)), num2str(date_and_time(4)), num2str(date_and_time(5)) ,'.txt'))
+%diary(strcat('D:\MATLAB\UAVVer4\logs\',...
+%    'simulation_logs',num2str(date_and_time(3)), num2str(date_and_time(4)), num2str(date_and_time(5)) ,'.txt'))
 
-diary on
+%diary on
 num_of_UAVs = 6; % number of UAVs in the mission
 
 time = 800; % simulation time in seconds
@@ -97,8 +97,8 @@ for i = 1:1:N
  
 end
 toc
-diary off
-save('simulation_Data.mat')
+%diary off
+%save('simulation_Data.mat')
 %% figure plots
 
 

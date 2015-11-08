@@ -1,7 +1,0 @@
-UAV 4 is now in the search mode 
-UAV 5 is now in the search mode 
-UAV 6 is now in the search mode 
-UAV 1 is now in the search mode 
-UAV 2 is now in the search mode 
-UAV 3 is now in the search mode 
-Elapsed time is 118.993824 seconds.
