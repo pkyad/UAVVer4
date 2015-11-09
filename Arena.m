@@ -45,7 +45,7 @@ classdef Arena<handle
     methods
         function obj = Arena(targets_obj) % Constructer function
  
-            obj.AO_waypoint= struct('x',1700 , 'y' , -600-2800 , 'z' , [100, 125 , 150 ,175, 200 , 225 , 250 ]);
+            obj.AO_waypoint= struct('x',1700 , 'y' , -600-2800 , 'z' , [100, 125 , 150 ,175, 200 , 225 , 250 , 275 , 300, 325 ]);
             % AO_waypoint Defined as the top left corner of the area of operation
             
             obj.targets = targets_obj; % initialising the targets in the arena

@@ -651,7 +651,7 @@ for i = 1:1:num_of_roads
                     end
                     
                     obj.search_parameters(mm).group=group_num +1;
-                    % making shure that differet targts are assigned to
+                    % making sure that differet targets are assigned to
                     % different first founder
                     flag = 0;
                     
@@ -773,8 +773,8 @@ connections = arena.road_connection;
 
 if road_num == 0 % distribution at the first junction , top left corner one
     % if the UAV never been on any road
-    approaching_x = arena.road_map.p11(1);
-    approaching_y = arena.road_map.p11(2);
+    approaching_x = arena.road_map.p2(1);
+    approaching_y = arena.road_map.p2(2);
     
     
     if sqrt((AC.state.x-approaching_x)^2+(AC.state.y-approaching_y)^2)<7*AC.state.v % wheather i am on close 
