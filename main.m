@@ -12,14 +12,26 @@ date_and_time = clock;
 %    'simulation_logs',num2str(date_and_time(3)), num2str(date_and_time(4)), num2str(date_and_time(5)) ,'.txt'))
 
 %diary on
-num_of_UAVs = 8; % number of UAVs in the mission
+num_of_UAVs = 7; % number of UAVs in the mission
 
 time = 1400; % simulation time in seconds
 
 %=======  initial states of the targets
+initial_state(13).x = 4012+100*1/sqrt(2);
+initial_state(13).y = -2550-100*1/sqrt(2);
+initial_state(13).speed = 8;
+
+initial_state(12).x = 4012+100*2/sqrt(2);
+initial_state(12).y = -2550-100*2/sqrt(2);
+initial_state(12).speed = 8;
+
+initial_state(11).x = 4012+100*3/sqrt(2);
+initial_state(11).y = -2550-100*3/sqrt(2);
+initial_state(11).speed = 8;
+
 initial_state(10).x = 4012+100*1/sqrt(2);
 initial_state(10).y = -2650-100*1/sqrt(2);
-initial_state(10).speed = 18;
+initial_state(10).speed = 8;
 
 initial_state(9).x = 4012+100*2/sqrt(2);
 initial_state(9).y =  -2650-100*2/sqrt(2);

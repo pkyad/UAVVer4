@@ -160,7 +160,7 @@ classdef mission_planner<handle
         
         function output = get.take_off_orbit(obj)
             % get function for takeoff_orbit
-            if obj.running_on <=3
+            if obj.running_on <=numel(obj.Agents)/2
                 output.x=1000;
                 output.y=-4000;
                 output.z=300;
@@ -184,7 +184,7 @@ classdef mission_planner<handle
         
         function output = get.ICA(obj)
             % get function for ICA
-            if obj.running_on <=3
+            if obj.running_on <=numel(obj.Agents)/2
                 
                 output(1).x=0;
                 output(1).y=-4000;
@@ -600,8 +600,8 @@ for i = 1:1:num_of_roads
                 
                 my_position = [AC.state.x , AC.state.y];
                 
-                % making shure the target found does not belongs to any
-                % other group that is already found or being tracked by the
+                % making sure that the target found does not belongs to any
+                % other group that is already found or being tracked by
                 % other group of UAVs 
                 found_flag =0;
                 for kk = 1:1:numel(arena.targets)
@@ -651,18 +651,22 @@ for i = 1:1:num_of_roads
                     end
                     
                     obj.search_parameters(mm).group=group_num +1;
-                    % making sure that differet targets are assigned to
+                    % making sure that different targets are assigned to
                     % different first founder
                     flag = 0;
                     
                     for p = 1:1:numel(arena.targets)
                         
-                        if p <=5
-                            mat = [obj.target_assingment(1) , obj.target_assingment(2)  ,...
-                                obj.target_assingment(3)  , obj.target_assingment(4) , obj.target_assingment(5) ];
+                        if p <= numel(arena.targets)/2
+                            for q = 1:1:numel(arena.targets)/2
+                                
+                               mat(1,q) =  obj.target_assingment(q);
+                            end
                         else
-                            mat = [obj.target_assingment(6) , obj.target_assingment(7)  ,...
-                                obj.target_assingment(8)  , obj.target_assingment(9) , obj.target_assingment(10) ];
+                            for q = 1:1:numel(arena.targets)/2
+                                
+                               mat(1,q) =  obj.target_assingment(q+5);
+                            end
                         end
                         % finding the target ID which i found
                         if obj.target_assingment(p)==0 && isempty(find(mat==1, 1))
@@ -686,10 +690,10 @@ for i = 1:1:num_of_roads
                     
                     obj.target_assingment(obj.track_parameters(mm).target_ID)=1;
                     % calling the clossest 3 of those are free
-                    if r-1 == 6
+                    if r-1 == robotNUM
                         [~ , indexes] = sort(those_are_free(:,2), 'ascend');
                         fprintf('This simulation has 6 free UAVs so there will be two groups \n')
-                        for q = 1:1:3
+                        for q = 1:1:robotNUM/2
                             
                             obj.search_parameters(indexes(q)).group=group_num +1;
                             fprintf('UAV %d belongs to group %d \n' , indexes(q) , group_num +1)
@@ -698,10 +702,10 @@ for i = 1:1:num_of_roads
                             obj.working_mode(indexes(q)) = 4;
                             
                         end
-                    elseif r-1 ==3
+                    elseif r-1 ==robotNUM/2
                         fprintf('This simulation has 3 free UAVs so there will be only one group \n' )
-                        for q = [those_are_free(1,1), those_are_free(2,1) , those_are_free(3,1)]
-                            obj.search_parameters(q).group =group_num + 1;
+                        for q = robotNUM/2
+                            obj.search_parameters(those_are_free(q,1)).group =group_num + 1;
                             fprintf('UAV %d belongs to group %d \n' , q , group_num +1)
                             fprintf('UAV %d is now in the track mode \n' , q )
                             obj.working_mode(q) = 4;
@@ -732,6 +736,8 @@ for i = 1:1:num_of_roads
                                 fprintf('UAV %d belongs to group %d and is the 2nd UAV \n' ,r ,my_group  )
                             elseif y==3
                                 fprintf('UAV %d belongs to group %d and is the 3rd UAV \n' , r ,my_group )
+                            elseif y==4
+                                fprintf('UAV %d belongs to group %d and is the 4rd UAV \n' , r ,my_group )
                             end
                             
                             obj.search_parameters(r).CP_states = y;

@@ -130,10 +130,10 @@ classdef Arena<handle
             
             % function to simulate the target movements 
             for i = 1:1:numel(obj.targets)
-                if i>5
+                if i>5 && i<=10
                     % making sure the one of the convoy is still for the
                     % first 1 minute
-                    if numel(obj.targets(1).vehical_log)>600
+                    if numel(obj.targets(1).vehical_log)>1200
                         
                         obj.targets(i).state.speed = 8;
                     else
@@ -173,6 +173,47 @@ classdef Arena<handle
                     obj.targets(i).cmd = cmd;
                     
                 elseif i<=5
+                    if numel(obj.targets(1).vehical_log)>600
+                        
+                        obj.targets(i).state.speed = 8;
+                    else
+                        
+                        obj.targets(i).state.speed = 0;
+                    end
+                    
+                    p_temp = obj.targets(i).cmd.data;
+                    
+                    if  norm([obj.targets(i).state.x-p_temp(1),...
+                            obj.targets(i).state.y-p_temp(2)])<=2*obj.targets(i).state.speed
+                        
+                        if p_temp == obj.road_map.p1
+                            
+                            p_temp = obj.road_map.p4;
+                            
+                        elseif p_temp == obj.road_map.p4
+                            
+                            p_temp = obj.road_map.p7;
+                        elseif p_temp == obj.road_map.p7
+                            
+                            p_temp = obj.road_map.p2;
+                            
+                        elseif p_temp == obj.road_map.p2
+                            
+                            p_temp = obj.road_map.p6;
+                            
+                        elseif p_temp == obj.road_map.p6
+                            
+                            p_temp = obj.road_map.p14;
+                            
+                        end
+                        
+                    end
+                    cmd.type = 'line';
+                    cmd.data = [p_temp(1) p_temp(2)];
+                   
+                    obj.targets(i).cmd = cmd;
+                    
+                elseif i>10
                   
                     
                     p_temp = obj.targets(i).cmd.data;
@@ -214,6 +255,7 @@ classdef Arena<handle
                    
                     obj.targets(i).cmd = cmd;
                 end
+            
             end
             
         end

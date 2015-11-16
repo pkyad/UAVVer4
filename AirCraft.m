@@ -183,7 +183,7 @@ classdef AirCraft<handle
             if mod(AC_ID_number,2)==0  % the initial state of the Aircraft when ID==1
                 
                 obj.state.x = -300*rand(1);
-                obj.state.y = -550*rand(1)-4000;
+                obj.state.y = -50*rand(1)-4000;
                 obj.state.h = 0;
                 obj.state.v = 14.4;
                 obj.state.gamma = 0;

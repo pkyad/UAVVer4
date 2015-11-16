@@ -2,7 +2,7 @@ clc
 clear
 close all
 
-load('1.mat');
+load('3.0.1.mat');
 map = sample_arena.road_map;
 
 road_map1 = [map.p1;map.p2;map.p6;...
@@ -94,6 +94,16 @@ for i = 1:5:numel(UAVs(1).vehical_log)
         elseif l ==5
             plot3(x , y , z , '*k')
         elseif l ==6
+            plot3(x , y , z , '*m')
+        elseif l ==7
+            plot3(x , y , z , '*m')
+            
+        elseif l ==8
+            plot3(x , y , z , '*m')
+            
+        elseif l ==9
+            plot3(x , y , z , '*m')
+        elseif l ==10
             plot3(x , y , z , '*m')
         end
         
