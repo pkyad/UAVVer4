@@ -4,7 +4,8 @@ close all
 clc
 clear
 
-addpath C:\Users\Pradeep\Documents\MATLAB\Multi-UAV_mission_Ver_4\track
+%addpath C:\Users\Pradeep\Documents\MATLAB\Multi-UAV_mission_Ver_4\track
+addpath D:\MATLAB\UAVVer4\track
 
 date_and_time = clock;
 
@@ -12,9 +13,9 @@ date_and_time = clock;
 %    'simulation_logs',num2str(date_and_time(3)), num2str(date_and_time(4)), num2str(date_and_time(5)) ,'.txt'))
 
 %diary on
-num_of_UAVs = 7; % number of UAVs in the mission
+num_of_UAVs = 8; % number of UAVs in the mission
 
-time = 1400; % simulation time in seconds
+time = 800; % simulation time in seconds
 
 %=======  initial states of the targets
 initial_state(13).x = 4012+100*1/sqrt(2);
@@ -72,7 +73,7 @@ initial_state(1).y =  -2750-100*5/sqrt(2);
 initial_state(1).speed = 8;
 
 %================  Initialisation   =============
-for i = 1:1:10
+for i = 1:1:numel(initial_state)
     initials = initial_state(1,i);
     ID = i;
     targets(i) = Target(ID ,initials ); %#ok<SAGROW>
@@ -133,6 +134,12 @@ for l = 1:1:num_of_UAVs
     elseif l ==5
         plot3(X , Y , Z ,'k')
     elseif l ==6
+        plot3(X , Y , Z ,'y')
+    elseif l ==7
+        plot3(X , Y , Z ,'b')
+    elseif l ==8
+        plot3(X , Y , Z ,'w')
+    else
         plot3(X , Y , Z ,'m')
     end
     

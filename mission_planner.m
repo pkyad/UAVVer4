@@ -160,19 +160,12 @@ classdef mission_planner<handle
         
         function output = get.take_off_orbit(obj)
             % get function for takeoff_orbit
-            if obj.running_on <=numel(obj.Agents)/2
-                output.x=1000;
-                output.y=-4000;
-                output.z=300;
-                output.rad=500;
-                
-            else
-                output.x=1000;
-                output.y=-4000;
-                output.z=200;
-                output.rad=500;
-                
-            end
+            
+            output.x=1000;
+            output.y=-4000;
+            output.z=obj.running_on*30*mod(obj.running_on,2) + 70 + 10*mod(obj.running_on,3);
+            output.rad=300;
+            
             
         end
         
@@ -184,49 +177,27 @@ classdef mission_planner<handle
         
         function output = get.ICA(obj)
             % get function for ICA
-            if obj.running_on <=numel(obj.Agents)/2
+            
                 
-                output(1).x=0;
-                output(1).y=-4000;
-                output(1).z=100;
-                output(1).rad=200;
-                output(1).ready=0;         % Level 1 is not the jump-in level for UAVi
+             output(1).x=0;
+             output(1).y=-4000;
+             output(1).z= mod(obj.running_on,2)*100 + 100;
+             output(1).rad=200;
+             output(1).ready=0;         % Level 1 is not the jump-in level for UAVi
                 
-                output(2).x=0;
-                output(2).y=-4000;
-                output(2).z=200;
-                output(2).rad=200;
-                output(2).ready=1;         % Level 2 is the jump-in level for UAVi
+             output(2).x=0;
+             output(2).y=-4000;
+             output(2).z=mod(obj.running_on,2)*100 + 100;
+             output(2).rad=200;
+             output(2).ready=1;         % Level 2 is the jump-in level for UAVi
                 
-                output(3).x=0;
-                output(3).y=-4000;
-                output(3).z=200;
-                output(3).rad=200;
-                output(3).ready=1;
+             output(3).x=0;
+             output(3).y=-4000;
+             output(3).z=mod(obj.running_on,2)*100 + 100;
+             output(3).rad=200;
+             output(3).ready=1;
                 
-            else
-                
-                
-                output(1).x=0;
-                output(1).y=-4000;
-                output(1).z=100;
-                output(1).rad=200;
-                output(1).ready=0;
-                
-                
-                output(2).x=0;
-                output(2).y=-4000;
-                output(2).z=200;
-                output(2).rad=200;
-                output(2).ready=0;
-                
-                
-                output(3).x=0;
-                output(3).y=-4000;
-                output(3).z=300;
-                output(3).rad=200;
-                output(3).ready=1;
-            end
+           
         end
    
         function plan_mission( obj ,k )
@@ -335,8 +306,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
         % We use value a to determine whether UAV(ii) reaches its
         % targetting level, i.e., whether its distance from the centroid of
         % the orbit is sufficiently small.
-        a = abs(((state.x-ICA(level).x)^2+(state.y-ICA(level).y)^2+(state.h-ICA(level).z)^2)-(ICA(level).rad)^2);
-        
+        a = abs((state.x-ICA(level).x)^2+(state.y-ICA(level).y)^2+(state.h-ICA(level).z)^2 -(ICA(level).rad)^2);
         switch a < obj.Delta
             case 0  % The distance of UAV(ii) from the centroid of the orbit is larger than a prespecified threshold value Delta.
                 % This means UAVi has not reached the designated targetting level yet. Then UAV(ii) continues climbing.
@@ -368,7 +338,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
                             v = take_off_orbit.y + (take_off_orbit.rad/(sqrt((state.x - take_off_orbit.x)^2+(state.y - take_off_orbit.y)^2)))*(state.y - take_off_orbit.y);
                             
                             %Calculate the time instant that UAVi reaches (u,v) from its current location
-                            ti = sqrt((state.x - u)^2+(state.y - v)^2)/12 + n*arena.dt;  % each step_no takes simParam.dt time unit during simulation
+                            ti = sqrt((state.x - u)^2+(state.y - v)^2)/15 + n*arena.dt;  % each step_no takes simParam.dt time unit during simulation
                             
                             % determine the time instant for each UAV in the holding pattern to reach (u,v)
                             obj.takeoff_parameters(ID).jump_in_ready = 1;
@@ -435,7 +405,7 @@ switch obj.takeoff_parameters(ID).AC_CP_states
             
             obj.takeoff_parameters(ID).AC_CP_states = 4;  % Once UAV(ii) starts its countdown, it moves to the last state before switching to the fly_to_AO mode.
         end
-        obj.NTimer(obj.running_on) = 20;
+        obj.NTimer(obj.running_on) = 500;
         cmd.type = 'orbit';
         cmd.orbit = [take_off_orbit.x;take_off_orbit.y;take_off_orbit.z;12;15;take_off_orbit.rad;1];
     case 4 % UAV(ii) is at state 4. When countdown reaches zero, UAV(ii) flies to the AO, i.e., switches to the working_mode 2.
@@ -690,29 +660,29 @@ for i = 1:1:num_of_roads
                     
                     obj.target_assingment(obj.track_parameters(mm).target_ID)=1;
                     % calling the clossest 3 of those are free
-                    if r-1 == robotNUM
-                        [~ , indexes] = sort(those_are_free(:,2), 'ascend');
-                        fprintf('This simulation has 6 free UAVs so there will be two groups \n')
-                        for q = 1:1:robotNUM/2
+                    [~ , indexes] = sort(those_are_free(:,2), 'ascend');
+                    fprintf('This simulation has %d free UAVs so there will be two groups \n' , robotNUM)
+                    if r>=3
+                       for q = 1:1:3
+                        obj.search_parameters(indexes(q)).group=group_num +1;
+                           fprintf('UAV %d belongs to group %d \n' , indexes(q) , group_num +1)
                             
-                            obj.search_parameters(indexes(q)).group=group_num +1;
-                            fprintf('UAV %d belongs to group %d \n' , indexes(q) , group_num +1)
-                            
-                            fprintf('UAV %d is now in track mode \n' , indexes(q))
-                            obj.working_mode(indexes(q)) = 4;
-                            
-                        end
-                    elseif r-1 ==robotNUM/2
-                        fprintf('This simulation has 3 free UAVs so there will be only one group \n' )
-                        for q = robotNUM/2
-                            obj.search_parameters(those_are_free(q,1)).group =group_num + 1;
-                            fprintf('UAV %d belongs to group %d \n' , q , group_num +1)
-                            fprintf('UAV %d is now in the track mode \n' , q )
-                            obj.working_mode(q) = 4;
-                            
-                        end
+                           fprintf('UAV %d is now in track mode \n' , indexes(q))
+                           obj.working_mode(indexes(q)) = 4;
+                       end
+                    else
+                       for q = 1:1:r
+                           obj.search_parameters(indexes(q)).group=group_num +1;
+                           fprintf('UAV %d belongs to group %d \n' , indexes(q) , group_num +1)
+
+                           fprintf('UAV %d is now in track mode \n' , indexes(q))
+                           obj.working_mode(indexes(q)) = 4;
+                           
+                       end
+                    end 
+                        
                     end
-                    % preparing the list of UAV which are in my group
+                    
                     my_group = obj.search_parameters(mm).group;
                     y = 2;
                     grp_members_id(1) = mm; % i should be on the top of this list

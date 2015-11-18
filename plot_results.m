@@ -2,7 +2,7 @@ clc
 clear
 close all
 
-load('3.0.1.mat');
+load('3.0.3.mat');
 map = sample_arena.road_map;
 
 road_map1 = [map.p1;map.p2;map.p6;...
@@ -29,7 +29,7 @@ road_map9 = [map.p13;4250 -500];
 flag = 0;
 keep_going =0;
 fig = figure(1);
-
+num_of_UAVs = numel(UAVs);
 set (fig, 'Units', 'normalized', 'Position', [0,0,1,1]);
 pause(2)
 for i = 1:5:numel(UAVs(1).vehical_log)
@@ -44,7 +44,7 @@ for i = 1:5:numel(UAVs(1).vehical_log)
         z = [UAVs(l).vehical_log(i).h];
         sumy = 0;
         sumx = 0;
-        for k = 1:1:6
+        for k = 1:1:num_of_UAVs
             
             sumy = sumy + UAVs(k).vehical_log(i).y;
             sumx = sumx + UAVs(k).vehical_log(i).x;
@@ -52,7 +52,7 @@ for i = 1:5:numel(UAVs(1).vehical_log)
         end
         
         
-        if  (sumx > 6*1700 &&  -600*6 > sumy ) || keep_going ==1
+        if  (sumx > num_of_UAVs*1700 &&  -600*num_of_UAVs > sumy ) || keep_going ==1
             if flag == 0
                tgt_t_0 = i;
                flag = 1; 
@@ -97,13 +97,7 @@ for i = 1:5:numel(UAVs(1).vehical_log)
             plot3(x , y , z , '*m')
         elseif l ==7
             plot3(x , y , z , '*m')
-            
-        elseif l ==8
-            plot3(x , y , z , '*m')
-            
-        elseif l ==9
-            plot3(x , y , z , '*m')
-        elseif l ==10
+        else
             plot3(x , y , z , '*m')
         end
         
