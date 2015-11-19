@@ -566,129 +566,133 @@ for i = 1:1:num_of_roads
                     (detectionP*temp_density_map{t,i}(3)+obj.flaseP*(1-temp_density_map{t,i}(3)));
                 % target found =======================================================================================
                 % doing assignment of targets and UAVs to groups
-                
-                
-                my_position = [AC.state.x , AC.state.y];
-                
+
                 % making sure that the target found does not belongs to any
                 % other group that is already found or being tracked by
                 % other group of UAVs 
-                found_flag =0;
-                for kk = 1:1:numel(arena.targets)
-                    if kk<=5
-                        if isempty(find([obj.target_assingment(1), obj.target_assingment(2), obj.target_assingment(3),...
-                                obj.target_assingment(4), obj.target_assingment(5)]==1 , 1))
-                            temp_flag =1;
+                
+                % making sure that different targets are assigned to
+                % different first founder
+                flag = 0;
+
+                for p = 1:1:numel(arena.targets)
+
+                    % finding the target ID which i found
+                    if obj.target_assingment(p)==0 %&& isempty(find(mat==1, 1))
+
+                        a = arena.targets(p).state.x ;
+                        b = arena.targets(p).state.y ;
+                        if flag ==0
+                            min = sqrt((AC.state.x-a)^2+(AC.state.y-b)^2);
+                            foundTarget = p;
+                            flag =1;
                         else
-                            temp_flag =0;
+                            dist = sqrt((AC.state.x-a)^2+(AC.state.y-b)^2);
+                            if dist < min
+                                min = dist;
+                                foundTarget = p;
+
+                            end
                         end
-                    else
-                        
-                        if isempty(find([obj.target_assingment(6), obj.target_assingment(7), obj.target_assingment(8),...
-                                obj.target_assingment(9), obj.target_assingment(10)]==1 , 1))
-                            temp_flag =1;
-                        else
-                            temp_flag =0;
-                        end
-                        
+                        fprintf('the target %d is at x = %d and y = %d from UAV which is a = %d and b = %d with diatance %d \n' , p, a , b, AC.state.x , AC.state.y , min)
                     end
-                    if sqrt((my_position(1)-arena.targets(kk).state.x)^2+(my_position(2)-arena.targets(kk).state.y)^2)<obj.target_search_range && ...
-                            temp_flag ==1
-                        found_flag =1;
+                end
+                fprintf('found target %d at a distance of %d \n' , foundTarget , min)
+                for q = 1:1:numel(arena.targets)
+                    if arena.targets(foundTarget).group == arena.targets(q).group
+
+                        mat(1,q) =  obj.target_assingment(q);
                     end
-                    
                 end
                 
                 if obj.search_parameters(mm).group ==0 && obj.search_parameters(mm).CP_states ==0 &&...
-                        found_flag ==1
+                        isempty(find(mat==1, 1))
+                    
+                    
                     % if i am not assigned any target
                     group_num =0;
-                    r = 1;
                     
                     for p = 1:1:robotNUM
                         
                         if obj.search_parameters(p).group> group_num
                             group_num = obj.search_parameters(p).group ;
                         end
+                    end
+
+                    % taking care of the case when I am already tracking
+                    % and found a target to I will simply call the near by
+                    % free UAV and convery the message that I found a
+                    % target and am already tracking another so you take
+                    % care of the newly found target
+                    flag = 0;
+                    a = arena.targets(foundTarget).state.x ;
+                    b = arena.targets(foundTarget).state.y ;
+                    for p = 1:1:robotNUM
+                        if flag == 0
+                            min = sqrt((obj.Agents(p).state.x-a)^2+(obj.Agents(p).state.y-b)^2);
+                            nearByUAV = p;
+                            flag = 1;
+                        else
+                            dist = sqrt((obj.Agents(p).state.x-a)^2+(obj.Agents(p).state.y-b)^2);
+                            if  dist < min
+                                min = dist;
+                                nearByUAV = p;
+                            end
+                           
+                        end
+                    end
+                    
+                    obj.track_parameters(nearByUAV).target_ID = foundTarget;
+                    fprintf('UAV %d assinged UAV %d the target no. %d  which is %d distance away \n',mm , nearByUAV , obj.track_parameters(nearByUAV).target_ID , min)
+                    r = 1;
+                    obj.target_assingment(foundTarget ,1)=1;
+                    for p = 1:1:robotNUM
+                       
                         % preparing the list of those having no group assigned
                         
-                        if obj.search_parameters(p).group==0
+                        if obj.search_parameters(p).group==0 && obj.search_parameters(p).CP_states ==0
                             those_are_free(r,1) = p;
-                            those_are_free(r,2) = Alldistance(mm , p);
+                            distFromTarget = sqrt((obj.Agents(p).state.x-a)^2+(obj.Agents(p).state.y-b)^2);
+                            those_are_free(r,2) = distFromTarget;
                             r = r+1;
-                            fprintf('UAV %d interpreted that UAV %d is free \n' , mm , p)
+                            fprintf('UAV %d interpreted that UAV %d is free at at distance of %d \n' , mm , p , distFromTarget);
                         end
                     end
                     
-                    obj.search_parameters(mm).group=group_num +1;
-                    % making sure that different targets are assigned to
-                    % different first founder
-                    flag = 0;
+                    obj.search_parameters(nearByUAV).group=group_num +1;
                     
-                    for p = 1:1:numel(arena.targets)
-                        
-                        if p <= numel(arena.targets)/2
-                            for q = 1:1:numel(arena.targets)/2
-                                
-                               mat(1,q) =  obj.target_assingment(q);
-                            end
-                        else
-                            for q = 1:1:numel(arena.targets)/2
-                                
-                               mat(1,q) =  obj.target_assingment(q+5);
-                            end
-                        end
-                        % finding the target ID which i found
-                        if obj.target_assingment(p)==0 && isempty(find(mat==1, 1))
-                            
-                            a = arena.targets(p).state.x ;
-                            b = arena.targets(p).state.y ;
-                            if flag ==0
-                                min = sqrt((AC.state.x-a)^2+(AC.state.y-b)^2);
-                                obj.track_parameters(mm).target_ID = p;
-                                flag =1;
-                            else
-                                dist = sqrt((AC.state.x-a)^2+(AC.state.y-b)^2);
-                                if min>dist
-                                    min = dist;
-                                    obj.track_parameters(mm).target_ID = p;
-                                end
-                            end
-                        end
-                    end
-                    fprintf('UAV %d assinged itself the target no. %d  \n',mm ,obj.track_parameters(mm).target_ID)
                     
-                    obj.target_assingment(obj.track_parameters(mm).target_ID)=1;
+                    
                     % calling the clossest 3 of those are free
                     [~ , indexes] = sort(those_are_free(:,2), 'ascend');
-                    fprintf('This simulation has %d free UAVs so there will be two groups \n' , robotNUM)
-                    if r>=3
+                    fprintf('This simulation has %d free UAVs \n' , numel(those_are_free(:,2)))
+                    if numel(those_are_free(:,2))>=3
+                        
                        for q = 1:1:3
-                        obj.search_parameters(indexes(q)).group=group_num +1;
-                           fprintf('UAV %d belongs to group %d \n' , indexes(q) , group_num +1)
-                            
-                           fprintf('UAV %d is now in track mode \n' , indexes(q))
-                           obj.working_mode(indexes(q)) = 4;
+                            obj.search_parameters(those_are_free(indexes(q), 1)).group=group_num +1;
+                            fprintf('UAV %d belongs to group %d \n' , (those_are_free(indexes(q), 1))  , group_num +1)
+
+                            fprintf('UAV %d is now in track mode \n' , (those_are_free(indexes(q), 1)) )
+                            obj.working_mode(those_are_free(indexes(q), 1)) = 4;
                        end
                     else
-                       for q = 1:1:r
-                           obj.search_parameters(indexes(q)).group=group_num +1;
-                           fprintf('UAV %d belongs to group %d \n' , indexes(q) , group_num +1)
+                       
+                       for q = 1:1:numel(those_are_free(:,2))
+                           obj.search_parameters(those_are_free(indexes(q), 1)).group=group_num +1;
+                           fprintf('UAV %d belongs to group %d \n' , (those_are_free(indexes(q), 1)) , group_num +1)
 
-                           fprintf('UAV %d is now in track mode \n' , indexes(q))
-                           obj.working_mode(indexes(q)) = 4;
+                           fprintf('UAV %d is now in track mode \n' , (those_are_free(indexes(q), 1)))
+                           obj.working_mode(those_are_free(indexes(q), 1)) = 4;
                            
                        end
                     end 
-                        
-                    end
                     
-                    my_group = obj.search_parameters(mm).group;
+                    new_group = obj.search_parameters(nearByUAV).group;
                     y = 2;
-                    grp_members_id(1) = mm; % i should be on the top of this list
+                    grp_members_id(1) = nearByUAV; % the nearest free UAV to the found target should be on the top of this list
                     for r = 1:1:numel(obj.Agents)
-                        if obj.search_parameters(r).group == my_group && obj.track_parameters(r).target_ID ==0 && ...
-                                obj.search_parameters(r).CP_states==0 && r ~=mm
+                        if obj.search_parameters(r).group == new_group && obj.track_parameters(r).target_ID ==0 && ...
+                                obj.search_parameters(r).CP_states==0 && r ~=nearByUAV
                             grp_members_id(y) =r;
                             y = y+1;
                         
@@ -696,18 +700,18 @@ for i = 1:1:num_of_roads
                     end
                     % assinging the states , i,e the leader , 2nd follower
                     % and the last one
-                    if obj.track_parameters(mm).target_ID~=0 &&  obj.search_parameters(mm).CP_states==0
+                    if obj.track_parameters(nearByUAV).target_ID~=0 &&  obj.search_parameters(nearByUAV).CP_states==0
                         % I am the leader of this group
                         y = 1;
                         for r = grp_members_id
                             if y ==1 
-                                fprintf('UAV %d belongs to group %d and is the Leader \n' , r ,my_group )
+                                fprintf('UAV %d belongs to group %d and is the Leader \n' , r ,new_group )
                             elseif y==2
-                                fprintf('UAV %d belongs to group %d and is the 2nd UAV \n' ,r ,my_group  )
+                                fprintf('UAV %d belongs to group %d and is the 2nd UAV \n' ,r ,new_group  )
                             elseif y==3
-                                fprintf('UAV %d belongs to group %d and is the 3rd UAV \n' , r ,my_group )
+                                fprintf('UAV %d belongs to group %d and is the 3rd UAV \n' , r ,new_group )
                             elseif y==4
-                                fprintf('UAV %d belongs to group %d and is the 4rd UAV \n' , r ,my_group )
+                                fprintf('UAV %d belongs to group %d and is the 4rd UAV \n' , r ,new_group )
                             end
                             
                             obj.search_parameters(r).CP_states = y;
@@ -749,8 +753,8 @@ connections = arena.road_connection;
 
 if road_num == 0 % distribution at the first junction , top left corner one
     % if the UAV never been on any road
-    approaching_x = arena.road_map.p2(1);
-    approaching_y = arena.road_map.p2(2);
+    approaching_x = arena.road_map.p11(1);
+    approaching_y = arena.road_map.p11(2);
     
     
     if sqrt((AC.state.x-approaching_x)^2+(AC.state.y-approaching_y)^2)<7*AC.state.v % wheather i am on close 
@@ -953,19 +957,6 @@ if  obj.search_parameters(mm).CP_states==1 % means i am the leader
     % if i am the leader , i will look for the leader target in the convoy
     % , ie , 5th or 10th target
     target  = arena.targets(obj.track_parameters(mm).target_ID);
-    %head = find_heading(target);% a function defined below
-    if temp_ID <5
-        if sqrt((AC.state.x-target.state.x)^2+(AC.state.y-target.state.y)^2)<50
-            
-            obj.track_parameters(mm).target_ID=temp_ID+1;
-        end
-    elseif temp_ID>5 && temp_ID <10
-        if sqrt((AC.state.x-target.state.x)^2+(AC.state.y-target.state.y)^2)<50
-            
-            obj.track_parameters(mm).target_ID=temp_ID+1;
-        end
-        
-    end
     if sqrt((AC.state.x-target.state.x)^2+(AC.state.y-target.state.y)^2)<50 && (target.ID==5 || target.ID==10)
         obj.track_parameters(mm).states =1;
         
@@ -977,26 +968,28 @@ if temp_ID == 0 % either i am the 2nd or third UAV in a group
     for j = 1:1:N
         if obj.search_parameters(j).group == obj.search_parameters(mm).group &&...
                 obj.track_parameters(j).target_ID ~=0
-            if obj.track_parameters(j).target_ID<=5
-                % I have to track first convoy
-                if obj.search_parameters(mm).CP_states==2
-                    obj.track_parameters(mm).target_ID = 3;
-                elseif obj.search_parameters(mm).CP_states==3
-                    obj.track_parameters(mm).target_ID = 1;
-                
-                end
-            else
-                % I have to track second convoy
-                if obj.search_parameters(mm).CP_states==2
-                    obj.track_parameters(mm).target_ID = 8;
-                elseif obj.search_parameters(mm).CP_states==3
-                    obj.track_parameters(mm).target_ID = 6;
-                
+            
+            targetGroupToTrack = arena.targets(obj.track_parameters(j).target_ID).group;
+            l = 1;
+            for k = 1:1:numel(arena.targets)
+                if arena.targets(k).group == targetGroupToTrack && obj.target_assingment(k,1)==0
+                   possibleTargets(l, 1) = k;
+                   l = l+1;
                 end
             end
+            break;
         end
-        
     end
+    possibleTargets
+    if obj.search_parameters(mm).CP_states == 2
+        fprintf('UAV %d will track target %d \n' , mm , possibleTargets(1,1) );
+        obj.track_parameters(mm).target_ID = possibleTargets(1,1);
+        obj.target_assingment(possibleTargets(1,1),1)=1;
+    elseif  obj.search_parameters(mm).CP_states == 3
+        obj.track_parameters(mm).target_ID = possibleTargets(numel(possibleTargets),1);
+        fprintf('UAV %d will track target %d \n' , mm , possibleTargets(numel(possibleTargets),1) );
+        obj.target_assingment(numel(possibleTargets),1)=1;
+    end  
 end
 target  = arena.targets(obj.track_parameters(mm).target_ID);
 if obj.track_parameters(mm).states == 0

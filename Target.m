@@ -9,6 +9,7 @@ classdef Target<handle
     properties( GetAccess = 'public')
         
         ID      % Identification number
+        group
         state =struct('x' , 0 , 'y' , 0 , 'speed' , 0) % stores state variables
         vehical_log % =struct('x' , 0 , 'y' , 0 , 'speed' , 0, 'cmd_type' , [] , 'cmd_data' , [])
         step_number = 1 
@@ -33,7 +34,7 @@ classdef Target<handle
             % constructor function : initialises the object with custom
             % initial states and ID
             obj.ID = ID;
-            
+            obj.group = initial_state.group;
             obj.state.x = initial_state.x;
             obj.state.y = initial_state.y;
             obj.state.speed = initial_state.speed;

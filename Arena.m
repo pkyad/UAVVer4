@@ -130,7 +130,7 @@ classdef Arena<handle
             
             % function to simulate the target movements 
             for i = 1:1:numel(obj.targets)
-                if i>5 && i<=10
+                if obj.targets(i).group ==1
                     % making sure the one of the convoy is still for the
                     % first 1 minute
                     if numel(obj.targets(1).vehical_log)>1200
@@ -172,7 +172,7 @@ classdef Arena<handle
                     cmd.data = [p_temp(1) p_temp(2)];
                     obj.targets(i).cmd = cmd;
                     
-                elseif i<=5
+                elseif obj.targets(i).group ==2
                     if numel(obj.targets(1).vehical_log)>600
                         
                         obj.targets(i).state.speed = 8;
@@ -213,7 +213,7 @@ classdef Arena<handle
                    
                     obj.targets(i).cmd = cmd;
                     
-                elseif i>10
+                elseif obj.targets(i).group ==3
                   
                     
                     p_temp = obj.targets(i).cmd.data;

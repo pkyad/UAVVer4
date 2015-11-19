@@ -1,8 +1,8 @@
-clc
-clear
+
+%clear
 close all
 
-load('3.0.3.mat');
+%load('3.0.4.mat');
 map = sample_arena.road_map;
 
 road_map1 = [map.p1;map.p2;map.p6;...

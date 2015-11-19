@@ -15,63 +15,73 @@ date_and_time = clock;
 %diary on
 num_of_UAVs = 8; % number of UAVs in the mission
 
-time = 800; % simulation time in seconds
+time = 1000; % simulation time in seconds
 
 %=======  initial states of the targets
 initial_state(13).x = 4012+100*1/sqrt(2);
 initial_state(13).y = -2550-100*1/sqrt(2);
 initial_state(13).speed = 8;
+initial_state(13).group = 1;
 
 initial_state(12).x = 4012+100*2/sqrt(2);
 initial_state(12).y = -2550-100*2/sqrt(2);
 initial_state(12).speed = 8;
+initial_state(12).group = 1;
 
 initial_state(11).x = 4012+100*3/sqrt(2);
 initial_state(11).y = -2550-100*3/sqrt(2);
 initial_state(11).speed = 8;
+initial_state(11).group = 1;
 
 initial_state(10).x = 4012+100*1/sqrt(2);
 initial_state(10).y = -2650-100*1/sqrt(2);
 initial_state(10).speed = 8;
+initial_state(10).group = 1;
 
 initial_state(9).x = 4012+100*2/sqrt(2);
 initial_state(9).y =  -2650-100*2/sqrt(2);
 initial_state(9).speed = 8;
+initial_state(9).group = 1;
 
 initial_state(8).x = 4012+100*3/sqrt(2);
 initial_state(8).y =  -2650-100*3/sqrt(2);
 initial_state(8).speed = 8;
+initial_state(8).group = 2;
 
 initial_state(7).x = 4012+100*4/sqrt(2);
 initial_state(7).y = -2650-100*4/sqrt(2);
 initial_state(7).speed = 8;
+initial_state(7).group = 2;
 
 initial_state(6).x = 4012+100*5/sqrt(2);
 initial_state(6).y =  -2650-100*5/sqrt(2);
 initial_state(6).speed = 8;
+initial_state(6).group = 2;
 
 initial_state(5).x = 4012+100*1/sqrt(2);
 initial_state(5).y = -2750-100*1/sqrt(2);
 initial_state(5).speed = 8;
+initial_state(5).group = 2;
 
 initial_state(4).x = 4012+100*2/sqrt(2);
 initial_state(4).y =  -2750-100*2/sqrt(2);
 initial_state(4).speed = 8;
-
+initial_state(4).group = 2;
 
 initial_state(3).x = 4012+100*3/sqrt(2);
 initial_state(3).y =  -2750-100*3/sqrt(2);
 initial_state(3).speed = 8;
+initial_state(3).group = 3;
 
 initial_state(2).x = 4012+100*4/sqrt(2);
 initial_state(2).y =  -2750-100*4/sqrt(2);
 initial_state(2).speed = 8;
-
+initial_state(2).group = 3;
 
 initial_state(1).x =  4012+100*5/sqrt(2);
 initial_state(1).y =  -2750-100*5/sqrt(2);
 initial_state(1).speed = 8;
-
+initial_state(1).group = 3;
 %================  Initialisation   =============
 for i = 1:1:numel(initial_state)
     initials = initial_state(1,i);
