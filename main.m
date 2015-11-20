@@ -15,73 +15,73 @@ date_and_time = clock;
 %diary on
 num_of_UAVs = 8; % number of UAVs in the mission
 
-time = 1000; % simulation time in seconds
+time = 1200; % simulation time in seconds
 
 %=======  initial states of the targets
-initial_state(13).x = 4012+100*1/sqrt(2);
-initial_state(13).y = -2550-100*1/sqrt(2);
-initial_state(13).speed = 8;
-initial_state(13).group = 1;
+initial_state(1).x = 4012+100*1/sqrt(2);
+initial_state(1).y = -2550-100*1/sqrt(2);
+initial_state(1).speed = 8;
+initial_state(1).group = 1;
 
-initial_state(12).x = 4012+100*2/sqrt(2);
-initial_state(12).y = -2550-100*2/sqrt(2);
-initial_state(12).speed = 8;
-initial_state(12).group = 1;
+initial_state(2).x = 4012+100*2/sqrt(2);
+initial_state(2).y = -2550-100*2/sqrt(2);
+initial_state(2).speed = 8;
+initial_state(2).group = 1;
 
-initial_state(11).x = 4012+100*3/sqrt(2);
-initial_state(11).y = -2550-100*3/sqrt(2);
-initial_state(11).speed = 8;
-initial_state(11).group = 1;
+initial_state(3).x = 4012+100*3/sqrt(2);
+initial_state(3).y = -2550-100*3/sqrt(2);
+initial_state(3).speed = 8;
+initial_state(3).group = 1;
 
-initial_state(10).x = 4012+100*1/sqrt(2);
-initial_state(10).y = -2650-100*1/sqrt(2);
-initial_state(10).speed = 8;
-initial_state(10).group = 1;
+initial_state(4).x = 4012+100*4/sqrt(2);
+initial_state(4).y = -2550-100*4/sqrt(2);
+initial_state(4).speed = 8;
+initial_state(4).group = 1;
 
-initial_state(9).x = 4012+100*2/sqrt(2);
-initial_state(9).y =  -2650-100*2/sqrt(2);
-initial_state(9).speed = 8;
-initial_state(9).group = 1;
+initial_state(5).x = 4012+100*5/sqrt(2);
+initial_state(5).y =  -2550-100*5/sqrt(2);
+initial_state(5).speed = 8;
+initial_state(5).group = 1;
 
-initial_state(8).x = 4012+100*3/sqrt(2);
-initial_state(8).y =  -2650-100*3/sqrt(2);
-initial_state(8).speed = 8;
-initial_state(8).group = 2;
+initial_state(6).x = 4012+100*3/sqrt(2);
+initial_state(6).y =  -2650-100*3/sqrt(2);
+initial_state(6).speed = 8;
+initial_state(6).group = 2;
 
 initial_state(7).x = 4012+100*4/sqrt(2);
 initial_state(7).y = -2650-100*4/sqrt(2);
 initial_state(7).speed = 8;
 initial_state(7).group = 2;
 
-initial_state(6).x = 4012+100*5/sqrt(2);
-initial_state(6).y =  -2650-100*5/sqrt(2);
-initial_state(6).speed = 8;
-initial_state(6).group = 2;
+initial_state(8).x = 4012+100*5/sqrt(2);
+initial_state(8).y =  -2650-100*5/sqrt(2);
+initial_state(8).speed = 8;
+initial_state(8).group = 2;
 
-initial_state(5).x = 4012+100*1/sqrt(2);
-initial_state(5).y = -2750-100*1/sqrt(2);
-initial_state(5).speed = 8;
-initial_state(5).group = 2;
+initial_state(9).x = 4012+100*1/sqrt(2);
+initial_state(9).y = -2650-100*1/sqrt(2);
+initial_state(9).speed = 8;
+initial_state(9).group = 2;
 
-initial_state(4).x = 4012+100*2/sqrt(2);
-initial_state(4).y =  -2750-100*2/sqrt(2);
-initial_state(4).speed = 8;
-initial_state(4).group = 2;
+initial_state(10).x = 4012+100*2/sqrt(2);
+initial_state(10).y =  -2650-100*2/sqrt(2);
+initial_state(10).speed = 8;
+initial_state(10).group = 2;
 
-initial_state(3).x = 4012+100*3/sqrt(2);
-initial_state(3).y =  -2750-100*3/sqrt(2);
-initial_state(3).speed = 8;
-initial_state(3).group = 3;
+initial_state(11).x = 4012+100*3/sqrt(2);
+initial_state(11).y =  -2550-100*3/sqrt(2);
+initial_state(11).speed = 8;
+initial_state(11).group = 3;
 
-initial_state(2).x = 4012+100*4/sqrt(2);
-initial_state(2).y =  -2750-100*4/sqrt(2);
-initial_state(2).speed = 8;
-initial_state(2).group = 3;
+initial_state(12).x = 4012+100*4/sqrt(2);
+initial_state(12).y =  -2550-100*4/sqrt(2);
+initial_state(12).speed = 8;
+initial_state(12).group = 3;
 
-initial_state(1).x =  4012+100*5/sqrt(2);
-initial_state(1).y =  -2750-100*5/sqrt(2);
-initial_state(1).speed = 8;
-initial_state(1).group = 3;
+initial_state(13).x =  4012+100*5/sqrt(2);
+initial_state(13).y =  -2550-100*5/sqrt(2);
+initial_state(13).speed = 8;
+initial_state(13).group = 3;
 %================  Initialisation   =============
 for i = 1:1:numel(initial_state)
     initials = initial_state(1,i);
@@ -148,7 +148,7 @@ for l = 1:1:num_of_UAVs
     elseif l ==7
         plot3(X , Y , Z ,'b')
     elseif l ==8
-        plot3(X , Y , Z ,'w')
+        plot3(X , Y , Z ,'m')
     else
         plot3(X , Y , Z ,'m')
     end
@@ -174,9 +174,11 @@ road_map6 = [map.p11;map.p12];
 
 road_map7 = [map.p6;map.p14];
 
-road_map8 = [map.p11;2000 -500];
+road_map8 = [map.p6;map.p8];
 
-road_map9 = [map.p13;4250 -500];
+road_map9 = [map.p11;2000 -500];
+
+road_map10 = [map.p13;4250 -500];
 
 plot(road_map1(:,1), road_map1(:,2),'--b')
 plot(road_map2(:,1), road_map2(:,2),'--r')
@@ -187,6 +189,7 @@ plot(road_map6(:,1), road_map6(:,2),'g')
 plot(road_map7(:,1), road_map7(:,2),'g')
 plot(road_map8(:,1), road_map8(:,2),'g')
 plot(road_map9(:,1), road_map9(:,2),'g')
+plot(road_map10(:,1), road_map9(:,2),'g')
 
 rectangle('Position',[2000,-3000,2000,2000],'LineWidth',3,'LineStyle','--')
 axis equal , grid on,hold off

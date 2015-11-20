@@ -57,7 +57,7 @@ classdef Arena<handle
             p5 = [3900 -2000];
             p6 = [2300 -2900];
             p7 = [2700 -2500];
-            p8 = [2400 -2000];
+            p8 = [2200 -2000];
             p9 = [3500 -1600];
             p10 = [2500 -1500];
             p11 = [2200 -1100];
@@ -107,6 +107,7 @@ classdef Arena<handle
             obj.road_connection(22).pt = [p3;p1];
             obj.road_connection(23).pt = [p10;p11];
             obj.road_connection(24).pt = [p7;p2];
+            obj.road_connection(25).pt = [p8;p6];
             
             for i = 1:1:numel(obj.targets)
                 % initial command to the target

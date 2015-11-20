@@ -32,7 +32,7 @@ fig = figure(1);
 num_of_UAVs = numel(UAVs);
 set (fig, 'Units', 'normalized', 'Position', [0,0,1,1]);
 pause(2)
-for i = 1:5:numel(UAVs(1).vehical_log)
+for i = 2000:5:numel(UAVs(1).vehical_log)
     cla , hold on
     for l = 1:1:numel(UAVs)
         X = [UAVs(l).vehical_log(1:5:i).x];
@@ -59,7 +59,14 @@ for i = 1:5:numel(UAVs(1).vehical_log)
                keep_going = 1;
             end
             for kk = 1:1:numel(sample_arena.targets)
-                plot(sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).x , sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).y , 'bs')
+                if sample_arena.targets(kk).group == 1
+                    plot(sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).x , sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).y , 'bs')
+                elseif sample_arena.targets(kk).group == 2
+                    plot(sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).x , sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).y , 'rs')
+                elseif sample_arena.targets(kk).group == 3
+                    plot(sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).x , sample_arena.targets(kk).vehical_log(i-tgt_t_0 +350 ).y , 'ks')
+                end
+                
             end
             
         end
