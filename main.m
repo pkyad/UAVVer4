@@ -68,20 +68,22 @@ initial_state(10).y =  -2650-100*2/sqrt(2);
 initial_state(10).speed = 8;
 initial_state(10).group = 2;
 
-initial_state(11).x = 4012+100*3/sqrt(2);
-initial_state(11).y =  -2550-100*3/sqrt(2);
-initial_state(11).speed = 8;
-initial_state(11).group = 3;
+% initial_state(11).x = 4012+100*3/sqrt(2);
+% initial_state(11).y =  -2550-100*3/sqrt(2);
+% initial_state(11).speed = 8;
+% initial_state(11).group = 3;
+% 
+% initial_state(12).x = 4012+100*4/sqrt(2);
+% initial_state(12).y =  -2550-100*4/sqrt(2);
+% initial_state(12).speed = 8;
+% initial_state(12).group = 3;
+% 
+% initial_state(13).x =  4012+100*5/sqrt(2);
+% initial_state(13).y =  -2550-100*5/sqrt(2);
+% initial_state(13).speed = 8;
+% initial_state(13).group = 3;
 
-initial_state(12).x = 4012+100*4/sqrt(2);
-initial_state(12).y =  -2550-100*4/sqrt(2);
-initial_state(12).speed = 8;
-initial_state(12).group = 3;
 
-initial_state(13).x =  4012+100*5/sqrt(2);
-initial_state(13).y =  -2550-100*5/sqrt(2);
-initial_state(13).speed = 8;
-initial_state(13).group = 3;
 %================  Initialisation   =============
 for i = 1:1:numel(initial_state)
     initials = initial_state(1,i);
@@ -134,9 +136,7 @@ for l = 1:1:num_of_UAVs
     if l == 1
         plot3(X , Y , Z)
     elseif l == 2
-        
         plot3(X , Y , Z , 'g')
-        
     elseif l == 3
         plot3(X , Y , Z , 'r')
     elseif l == 4

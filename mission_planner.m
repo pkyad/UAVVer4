@@ -461,7 +461,7 @@ end
 
 
 function NewWayPoint = GetNewWayPoint(obj , AC , arena )
-
+targetNUM = numel(arena.targets);
 grid_density = arena.grid_density; % Mesh size
 robotNUM = numel(obj.Agents); % number of UAVs searching the area
 rc = obj.AC_communicators(1).commsRange;
@@ -627,24 +627,7 @@ for i = 1:1:num_of_roads
                     
                     a = arena.targets(foundTarget).state.x ;
                     b = arena.targets(foundTarget).state.y ;
-%                     flag = 0;
-%                     for p = 1:1:robotNUM
-%                         if flag == 0
-%                             min = sqrt((obj.Agents(p).state.x-a)^2+(obj.Agents(p).state.y-b)^2);
-%                             nearByUAV = p;
-%                             flag = 1;
-%                         else
-%                             dist = sqrt((obj.Agents(p).state.x-a)^2+(obj.Agents(p).state.y-b)^2);
-%                             if  dist < min
-%                                 min = dist;
-%                                 nearByUAV = p;
-%                             end
-%                            
-%                         end
-%                     end     
-%                     
-%                     fprintf('UAV %d assinged UAV %d the target no. %d  which is %d distance away \n',mm , nearByUAV , obj.track_parameters(nearByUAV).target_ID , min)
-%                     obj.search_parameters(nearByUAV).group=group_num +1;
+
                     r = 1;
                     obj.target_assingment(foundTarget ,1)=1;
                     for p = 1:1:robotNUM
@@ -660,33 +643,35 @@ for i = 1:1:num_of_roads
                         end
                     end
                     
+                    count = 0;
                     
+                    for p = 1:1:targetNUM
+                        if arena.targets(p).group == arena.targets(foundTarget).group
+                            count = count +1;
+                        end
+                    end
                     
-                    
-                    
+                    if numel(those_are_free(:,2))-5 > 0
+                        % we have more then enough UAVs for allocation at
+                        % the ratio of 5:3
+                        if count == 5
+                           assignment = 5;
+                        elseif count == 4
+                           assignment = 3;
+                        end
+                    else 
+                        assignment = numel(those_are_free(:,2));
+                    end
                     % calling the clossest 3 of those are free
                     [~ , indexes] = sort(those_are_free(:,2), 'ascend');
                     fprintf('This simulation has %d free UAVs \n' , numel(those_are_free(:,2)))
-                    if numel(those_are_free(:,2))>=3
-                        
-                       for q = 1:1:3
-                            obj.search_parameters(those_are_free(indexes(q), 1)).group=group_num +1;
-                            fprintf('UAV %d belongs to group %d \n' , (those_are_free(indexes(q), 1))  , group_num +1)
+                    for q = 1:1:assignment
+                        obj.search_parameters(those_are_free(indexes(q), 1)).group=group_num +1;
+                        fprintf('UAV %d belongs to group %d \n' , (those_are_free(indexes(q), 1))  , group_num +1)
 
-                            fprintf('UAV %d is now in track mode \n' , (those_are_free(indexes(q), 1)) )
-                            obj.working_mode(those_are_free(indexes(q), 1)) = 4;
-                       end
-                    else
-                       
-                       for q = 1:1:numel(those_are_free(:,2))
-                           obj.search_parameters(those_are_free(indexes(q), 1)).group=group_num +1;
-                           fprintf('UAV %d belongs to group %d \n' , (those_are_free(indexes(q), 1)) , group_num +1)
-
-                           fprintf('UAV %d is now in track mode \n' , (those_are_free(indexes(q), 1)))
-                           obj.working_mode(those_are_free(indexes(q), 1)) = 4;
-                           
-                       end
-                    end 
+                        fprintf('UAV %d is now in track mode \n' , (those_are_free(indexes(q), 1)) )
+                        obj.working_mode(those_are_free(indexes(q), 1)) = 4;
+                    end
                     
                     new_group = group_num +1;
                     y = 2;
@@ -708,13 +693,9 @@ for i = 1:1:num_of_roads
                         y = 1;
                         for r = grp_members_id
                             if y ==1 
-                                fprintf('UAV %d belongs to group %d and is the Leader \n' , r ,new_group )
-                            elseif y==2
-                                fprintf('UAV %d belongs to group %d and is the 2nd UAV \n' ,r ,new_group  )
-                            elseif y==3
-                                fprintf('UAV %d belongs to group %d and is the 3rd UAV \n' , r ,new_group )
-                            elseif y==4
-                                fprintf('UAV %d belongs to group %d and is the 4rd UAV \n' , r ,new_group )
+                                fprintf('UAV %d belongs to group %d and is the Leader \n' , r , new_group )
+                            else
+                                fprintf('UAV %d belongs to group %d and is on number %d in list\n' , r , new_group ,y )
                             end
                             
                             obj.search_parameters(r).CP_states = y;
@@ -1008,7 +989,7 @@ if temp_ID == 0 % either i am the 2nd or third UAV in a group
         end
         obj.target_assingment(obj.track_parameters(mm).target_ID)=1;
         fprintf('UAV %d will track target %d \n' , mm , obj.track_parameters(mm).target_ID );
-    elseif  obj.search_parameters(mm).CP_states == 3
+    elseif  obj.search_parameters(mm).CP_states >= 3
         obj.track_parameters(mm).target_ID = possibleTargets(numel(possibleTargets),1);
         fprintf('UAV %d will track target %d \n' , mm , possibleTargets(numel(possibleTargets),1) );
         obj.target_assingment(obj.track_parameters(mm).target_ID)=1;

@@ -173,7 +173,7 @@ classdef Arena<handle
                     cmd.data = [p_temp(1) p_temp(2)];
                     obj.targets(i).cmd = cmd;
                     
-                elseif obj.targets(i).group ==2
+                elseif obj.targets(i).group ==3
                     if numel(obj.targets(1).vehical_log)>600
                         
                         obj.targets(i).state.speed = 8;
@@ -214,7 +214,7 @@ classdef Arena<handle
                    
                     obj.targets(i).cmd = cmd;
                     
-                elseif obj.targets(i).group ==3
+                elseif obj.targets(i).group ==2
                   
                     
                     p_temp = obj.targets(i).cmd.data;
