@@ -655,7 +655,7 @@ for i = 1:1:num_of_roads
                         % we have more then enough UAVs for allocation at
                         % the ratio of 5:3
                         if count == 5
-                           assignment = 3;
+                           assignment = 4;
                         elseif count == 4
                            assignment = 3;
                         end
