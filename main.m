@@ -13,7 +13,7 @@ date_and_time = clock;
 %    'simulation_logs',num2str(date_and_time(3)), num2str(date_and_time(4)), num2str(date_and_time(5)) ,'.txt'))
 
 %diary on
-num_of_UAVs = 8; % number of UAVs in the mission
+num_of_UAVs = 6; % number of UAVs in the mission
 
 time = 1200; % simulation time in seconds
 
