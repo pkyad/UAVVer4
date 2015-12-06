@@ -4,8 +4,8 @@ close all
 clc
 clear
 
-%addpath C:\Users\Pradeep\Documents\MATLAB\Multi-UAV_mission_Ver_4\track
-addpath D:\MATLAB\UAVVer4\track
+addpath C:\Users\Pradeep\Documents\MATLAB\Multi-UAV_mission_Ver_4\track
+%addpath D:\MATLAB\UAVVer4\track
 
 date_and_time = clock;
 
@@ -13,7 +13,7 @@ date_and_time = clock;
 %    'simulation_logs',num2str(date_and_time(3)), num2str(date_and_time(4)), num2str(date_and_time(5)) ,'.txt'))
 
 %diary on
-num_of_UAVs = 8; % number of UAVs in the mission
+num_of_UAVs = 4; % number of UAVs in the mission
 
 time = 1200; % simulation time in seconds
 

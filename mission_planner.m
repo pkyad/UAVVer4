@@ -651,15 +651,17 @@ for i = 1:1:num_of_roads
                         end
                     end
                     
-                    if numel(those_are_free(:,2))-5 > 0
+                    if numel(those_are_free(:,2))-3 > 0
                         % we have more then enough UAVs for allocation at
                         % the ratio of 5:3
+                        fprintf('Will assign now in part the count is %d \n' , count)
                         if count == 5
-                           assignment = 4;
-                        elseif count == 4
+                           assignment = 2;
+                        elseif count == 3
                            assignment = 3;
                         end
                     else 
+                        fprintf('Will assign all the remaining UAVs')
                         assignment = numel(those_are_free(:,2));
                     end
                     % calling the clossest 3 of those are free
